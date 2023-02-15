@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct ICS224_Lab7App: App {
+    @StateObject var treasureItems = TreasureItems()
     var body: some Scene {
         WindowGroup {
-            StartView()
+            MainView().environmentObject(treasureItems)
         }
     }
 }
