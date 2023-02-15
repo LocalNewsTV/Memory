@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct StartView: View {
     var body: some View {
         NavigationStack(){
             VStack {
@@ -21,52 +21,7 @@ struct ContentView: View {
                 
             }
             .padding()
-            .toolbar{
-                ToolbarItem(placement: .bottomBar){
-                    if true {
-                        Button(
-                            action: {
-                                withAnimation {
-                                    print("Start Button")
-                                }
-                            }
-                        ){
-                            Text("Start")
-                        }
-                        .accessibilityIdentifier("StartNavButton")
-                    }
-                }
-                ToolbarItem(placement: .bottomBar){Spacer()}
-                ToolbarItem(placement: .bottomBar){
-                    if true {
-                        Button(
-                            action: {
-                                withAnimation {
-                                    print("Game Button")
-                                }
-                            }
-                        ){
-                            Text("Game")
-                        }
-                        .accessibilityIdentifier("GameNavButton")
-                    }
-                }
-                ToolbarItem(placement: .bottomBar){Spacer()}
-                ToolbarItem(placement: .bottomBar){
-                    if true {
-                        Button(
-                            action: {
-                                withAnimation {
-                                    print("Settings Button")
-                                }
-                            }
-                        ){
-                            Text("Settings")
-                        }
-                        .accessibilityIdentifier("SettingsBarButton")
-                    }
-                }
-            }
+            
         }
     }
 }
@@ -74,6 +29,6 @@ struct ContentView: View {
 
 struct StartView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        StartView()
     }
 }
