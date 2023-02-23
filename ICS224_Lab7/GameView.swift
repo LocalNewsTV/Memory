@@ -10,27 +10,35 @@ import SwiftUI
 struct GameView: View {
 //    @State var cardList: [gamePiece]
     @EnvironmentObject var treasureItems: TreasureItems
-    @EnvironmentObject var cardList: TreasureItemDeck
+    @EnvironmentObject var treasureCards: TreasureItemDeck
     
     var remainingPieces: Int = 0
     var attempts: Int = 0
     var body: some View {
         VStack {
-            HStack{
-                ForEach($cardList.entries) { $treasureItem in
-                    Button(
-                        action:
+            Grid{
+                let size: Int = treasureCards.entries.count
+                ForEach(0..<size, id: \.self) { row in
+                    GridRow {
+                        ForEach(0..<size, id: \.self){ col in
+                            Button(
+                                action:
+                                    {
+                                        if(treasureCards.entries[row][col].flipped != true){
+                                            treasureCards.entries[row][col].flipped.toggle()
+                                            
+                                        }
+                                        
+                                    }
+                            )
                             {
-                                if(treasureItem.flipped != true){
-                                    treasureItem.flipped.toggle()
-                                    
-                                }
-                                
-                            }
-                    )
-                    {
-                        Image(systemName: treasureItem.flipped ? treasureItem.imageName : "circle.fill")
+                                Image(systemName: treasureCards.entries[row][col].flipped ? (treasureCards.entries[row][col].imageName ) : "circle.fill")
+                                    .foregroundColor(.black)
+                            }.frame(width: 20, height: 20)
+                            
+                        }
                     }
+
                 }
             }
         Text("Attempts: \(attempts)")

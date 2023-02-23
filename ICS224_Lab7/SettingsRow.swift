@@ -12,6 +12,7 @@ struct SettingsRow: View {
     let stepperRangeNumGroups = 1...5
     let stepValue = 1
     @Binding var treasureItem: TreasureItem
+    @Binding var changes: Bool
     var body: some View {
         HStack {
             TextEditor(text:
@@ -22,7 +23,7 @@ struct SettingsRow: View {
                     set:{
                         newValue in
                         treasureItem.imageName = newValue
-                        
+                        changes = true
                     }
                 )
             )
@@ -37,6 +38,7 @@ struct SettingsRow: View {
                 set: {
                     newValue in
                     treasureItem.perGroup = newValue
+                    changes = true
                 }),
                      in: stepperRangePerGroup,
                     step: stepValue
@@ -52,6 +54,7 @@ struct SettingsRow: View {
                 set: {
                     newValue in
                     treasureItem.numGroups = newValue
+                    changes = true
                 }),
                      in: stepperRangeNumGroups,
                     step: stepValue

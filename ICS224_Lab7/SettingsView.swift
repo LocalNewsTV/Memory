@@ -8,23 +8,28 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var treasureItems: TreasureItems
+    @ObservedObject var treasureItems: TreasureItems
+    @ObservedObject var treasureCards: TreasureItemDeck
+    @State var changes = false
     var body: some View {
-        VStack{
+    VStack {
             List($treasureItems.entries){
                 $treasureItem in
-                SettingsRow(treasureItem: $treasureItem)
+                SettingsRow(treasureItem: $treasureItem, changes: $changes)
             }
-
+            .onChange(of: changes, perform: { newValue in
+                treasureCards.rebuildList(items: treasureItems.entries)
+                changes = false
+            })
         }
     }
 }
 
 struct SettingsView_Previews: PreviewProvider {
-    @EnvironmentObject static var treasureItems: TreasureItems
-    //@State static var treasureItems = TreasureItems()
+    @ObservedObject static var treasureItems = TreasureItems()
+    @ObservedObject static var treasureCards = TreasureItemDeck()
     
     static var previews: some View {
-        SettingsView().environmentObject(treasureItems)
+        SettingsView(treasureItems: treasureItems, treasureCards: treasureCards)
     }
 }

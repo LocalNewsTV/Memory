@@ -19,11 +19,7 @@ struct gamePiece: Identifiable {
         self.numPerGroup = numPerGroup
     }
 }
-class Deck: ObservableObject {
-    @Published var tiles = [gamePiece]()
-    init(){
-    }
-}
+
 func generateGameArray(items: TreasureItems) -> [gamePiece]{
     var set: [gamePiece] = []
     for i in 0..<items.entries.count {
@@ -48,7 +44,7 @@ struct MainView: View {
                 }
                 else if view == "Settings" {
                     
-                    SettingsView().environmentObject(treasureItems)
+                    SettingsView(treasureItems: treasureItems, treasureCards: treasureCards ).environmentObject(treasureItems)
                         
                 }
                 else if view == "Game" {
