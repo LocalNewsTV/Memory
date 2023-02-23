@@ -7,50 +7,64 @@
 
 import SwiftUI
 
-class gamePiece: Identifiable {
-    let id = UUID()
-    let image: String
-    var flipped: Bool
-    init(image: String, flipped: Bool = false){
-        self.image = image
-        self.flipped = flipped
-    }
-    func flip()->Void{
-        self.flipped = self.flipped ? false : true
-        print(self.flipped)
-    }
-}
-
-func generateGameArray(items: TreasureItems) -> [gamePiece]{
-    var set: [gamePiece] = []
-    for i in 0..<items.entries.count {
-        for _ in 0..<(items.entries[i].numGroups * items.entries[i].perGroup) {
-            set.append(gamePiece(image: items.entries[i].imageName))
-        }
-    }
-    print(set)
-    return set.shuffled()
-}
-
 struct GameView: View {
-    @EnvironmentObject var treasureItems: TreasureItems
-    @State var arr = []
+    @State var cardList: [gamePiece]
+    @State var currGuess: [gamePiece]
+    var remainingPieces: Int = 0
+    var attempts: Int = 0
     var body: some View {
-        HStack{
-            ForEach(generateGameArray(items: treasureItems)) { treasureItem in
+        VStack {
+            HStack{
+                //            ForEach($treasureItems.entries){
+                //                $treasureItem in
+                //                Button (
+                //                    action: {
+                //                        treasureItem.flipped.toggle()
+                //                    }){
+                //                        Image(systemName: treasureItem.flipped ? treasureItem.imageName : "circle.fill")
+                //                    }
+                ForEach($cardList) { $treasureItem in
                     Button(
-                        action: { treasureItem.flip() } )
+                        action:
+                            {
+                                if(treasureItem.flipped != true){
+                                    treasureItem.flipped.toggle()
+                                    if currGuess.count == 0 {
+                                        currGuess.append(treasureItem)
+                                        return
+                                    }
+                                    
+                                    else if currGuess[0].image == treasureItem.image {
+                                        currGuess.append(treasureItem)
+                                        if currGuess.count == treasureItem.numPerGroup {
+                                            print("Successful Matching")
+                                            currGuess = []
+                                            //removal Logic
+                                        }
+                                    }
+                                    else {
+                                        print("Wrong!")
+                                        for i in 0..<currGuess.count {
+                                            currGuess[i].flipped.toggle()
+                                        }
+                                        currGuess = []
+                                    }
+                                }
+                            }
+                    )
                     {
                         Image(systemName: treasureItem.flipped ? treasureItem.image : "circle.fill")
                     }
-                
+                }
             }
+        Text("Attempts: \(attempts)")
+        Text("Total Remaining \(remainingPieces)")
         }
     }
 }
 
-struct GameView_Previews: PreviewProvider {
-    static var previews: some View {
-        GameView()
-    }
-}
+//struct GameView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        GameView()
+//    }
+//}

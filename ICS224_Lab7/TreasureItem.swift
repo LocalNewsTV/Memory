@@ -13,9 +13,11 @@ struct TreasureItem: Identifiable {
     var imageName: String
     var perGroup: Int
     var numGroups: Int
-    init (imageName: String, perGroup: Int, numGroups: Int) {
+    var flipped: Bool
+    init (imageName: String, perGroup: Int, numGroups: Int, flipped: Bool = false) {
         self.imageName = imageName
         self.perGroup = perGroup
         self.numGroups = numGroups
+        self.flipped = flipped
     }
 }

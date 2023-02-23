@@ -8,10 +8,37 @@
 import SwiftUI
 
 
+struct gamePiece: Identifiable {
+    let id = UUID()
+    let image: String
+    var flipped: Bool
+    var numPerGroup: Int
+    init(image: String, flipped: Bool = false, numPerGroup: Int){
+        self.image = image
+        self.flipped = flipped
+        self.numPerGroup = numPerGroup
+    }
+}
+class Deck: ObservableObject {
+    @Published var tiles = [gamePiece]()
+    init(){
+    }
+}
+func generateGameArray(items: TreasureItems) -> [gamePiece]{
+    var set: [gamePiece] = []
+    for i in 0..<items.entries.count {
+        for _ in 0..<(items.entries[i].numGroups * items.entries[i].perGroup) {
+            set.append(gamePiece(image: items.entries[i].imageName, numPerGroup: items.entries[i].perGroup))
+        }
+    }
+    print(set)
+    return set.shuffled()
+}
+
 
 struct MainView: View {
     @State var view = "Start"
-    @EnvironmentObject var treasureItems: TreasureItems
+    @StateObject var treasureItems = TreasureItems()
     var body: some View {
         NavigationStack() {
             VStack(){
@@ -24,7 +51,7 @@ struct MainView: View {
                         
                 }
                 else if view == "Game" {
-                    GameView().environmentObject(treasureItems)
+                    GameView(cardList: generateGameArray(items: treasureItems), currGuess: [])
                 }
             }
             .navigationBarTitle(Text("Game"))
