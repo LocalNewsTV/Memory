@@ -12,12 +12,13 @@ struct GameView: View {
     @EnvironmentObject var treasureItems: TreasureItems
     @EnvironmentObject var treasureCards: TreasureItemDeck
     
-    var remainingPieces: Int = 0
+    @State var remainingPieces: Int = 0
     var attempts: Int = 0
     var body: some View {
         VStack {
             Grid{
                 let size: Int = treasureCards.entries.count
+                
                 ForEach(0..<size, id: \.self) { row in
                     GridRow {
                         ForEach(0..<size, id: \.self){ col in
@@ -34,6 +35,7 @@ struct GameView: View {
                             {
                                 Image(systemName: treasureCards.entries[row][col].flipped ? (treasureCards.entries[row][col].imageName ) : "circle.fill")
                                     .foregroundColor(.black)
+                                
                             }.frame(width: 20, height: 20)
                             
                         }
@@ -42,7 +44,7 @@ struct GameView: View {
                 }
             }
         Text("Attempts: \(attempts)")
-        Text("Total Remaining \(remainingPieces)")
+        Text("Total Remaining \(treasureCards.remaining)")
         }
     }
 }
