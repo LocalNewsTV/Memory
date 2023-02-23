@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct SettingsRow: View {
-    let stepperRange = 2...5
+    let stepperRangePerGroup = 2...5
+    let stepperRangeNumGroups = 1...5
     let stepValue = 1
-    @State var treasureItem: TreasureItem
+    @Binding var treasureItem: TreasureItem
     var body: some View {
         HStack {
             TextEditor(text:
@@ -36,7 +37,7 @@ struct SettingsRow: View {
                     newValue in
                     treasureItem.perGroup = newValue
                 }),
-                     in: stepperRange,
+                     in: stepperRangePerGroup,
                     step: stepValue
             ) {
                 Text("\(treasureItem.perGroup)/per group")
@@ -51,7 +52,7 @@ struct SettingsRow: View {
                     newValue in
                     treasureItem.numGroups = newValue
                 }),
-                     in: stepperRange,
+                     in: stepperRangeNumGroups,
                     step: stepValue
             ) {
                 Text("\(treasureItem.numGroups) groups")
@@ -63,10 +64,10 @@ struct SettingsRow: View {
     
     
 }
-
-struct SettingsRow_Previews: PreviewProvider {
-    static var treasureItems = TreasureItems()
-    static var previews: some View {
-        SettingsRow(treasureItem:  treasureItems.entries[0])
-    }
-}
+//
+//struct SettingsRow_Previews: PreviewProvider {
+//    static var treasureItems = TreasureItems()
+//    static var previews: some View {
+//        SettingsRow(treasureItem:  treasureItems.entries[0])
+//    }
+//}

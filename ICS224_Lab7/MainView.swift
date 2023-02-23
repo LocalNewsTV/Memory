@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+
 struct MainView: View {
     @State var view = "Start"
     @EnvironmentObject var treasureItems: TreasureItems
@@ -17,13 +19,30 @@ struct MainView: View {
                     StartView()
                 }
                 else if view == "Settings" {
-                    SettingsView(treasureItems: $treasureItems)
+                    
+                    SettingsView().environmentObject(treasureItems)
+                        
                 }
                 else if view == "Game" {
-                    GameView()
+                    GameView().environmentObject(treasureItems)
                 }
             }
+            .navigationBarTitle(Text("Game"))
             .toolbar{
+                ToolbarItem(placement: .navigationBarTrailing){
+                    if view == "Settings" {
+                        Button(
+                            action: {
+                                withAnimation {
+                                    let item = TreasureItem(imageName: "questionmark", perGroup: 2, numGroups: 2)
+                                    treasureItems.entries.insert(item, at: 0)
+                                }
+                            }
+                        ){
+                            Image(systemName: "plus")
+                        }
+                    }
+                }
                 ToolbarItem(placement: .bottomBar){Spacer()}
                 ToolbarItem(placement: .bottomBar){
                     Button(

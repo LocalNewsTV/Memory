@@ -8,21 +8,23 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Binding var treasureItems: TreasureItems
+    @EnvironmentObject var treasureItems: TreasureItems
     var body: some View {
         VStack{
             List($treasureItems.entries){
                 $treasureItem in
-                SettingsRow(treasureItem: treasureItem)
+                SettingsRow(treasureItem: $treasureItem)
             }
-            Text("Hello From Settings")
+
         }
     }
 }
 
 struct SettingsView_Previews: PreviewProvider {
-    @State static var treasureI
+    @EnvironmentObject static var treasureItems: TreasureItems
+    //@State static var treasureItems = TreasureItems()
+    
     static var previews: some View {
-        SettingsView(treasureItems: treasureItems)
+        SettingsView().environmentObject(treasureItems)
     }
 }

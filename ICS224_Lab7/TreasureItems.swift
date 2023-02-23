@@ -13,6 +13,6 @@ class TreasureItems: ObservableObject {
     
     init() {
         entries = [TreasureItem]()
-        entries.append(TreasureItem(imageName: "question", perGroup: 2, numGroups: 2))
+        entries.append(TreasureItem(imageName: "questionmark", perGroup: 2, numGroups: 2))
     }
 }
