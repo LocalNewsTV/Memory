@@ -39,6 +39,7 @@ func generateGameArray(items: TreasureItems) -> [gamePiece]{
 struct MainView: View {
     @State var view = "Start"
     @StateObject var treasureItems = TreasureItems()
+    @StateObject var treasureCards = TreasureItemDeck()
     var body: some View {
         NavigationStack() {
             VStack(){
@@ -51,7 +52,7 @@ struct MainView: View {
                         
                 }
                 else if view == "Game" {
-                    GameView(cardList: generateGameArray(items: treasureItems), currGuess: [])
+                    GameView().environmentObject(treasureCards).environmentObject(treasureItems)
                 }
             }
             .navigationBarTitle(Text("Game"))

@@ -8,52 +8,28 @@
 import SwiftUI
 
 struct GameView: View {
-    @State var cardList: [gamePiece]
-    @State var currGuess: [gamePiece]
+//    @State var cardList: [gamePiece]
+    @EnvironmentObject var treasureItems: TreasureItems
+    @EnvironmentObject var cardList: TreasureItemDeck
+    
     var remainingPieces: Int = 0
     var attempts: Int = 0
     var body: some View {
         VStack {
             HStack{
-                //            ForEach($treasureItems.entries){
-                //                $treasureItem in
-                //                Button (
-                //                    action: {
-                //                        treasureItem.flipped.toggle()
-                //                    }){
-                //                        Image(systemName: treasureItem.flipped ? treasureItem.imageName : "circle.fill")
-                //                    }
-                ForEach($cardList) { $treasureItem in
+                ForEach($cardList.entries) { $treasureItem in
                     Button(
                         action:
                             {
                                 if(treasureItem.flipped != true){
                                     treasureItem.flipped.toggle()
-                                    if currGuess.count == 0 {
-                                        currGuess.append(treasureItem)
-                                        return
-                                    }
                                     
-                                    else if currGuess[0].image == treasureItem.image {
-                                        currGuess.append(treasureItem)
-                                        if currGuess.count == treasureItem.numPerGroup {
-                                            print("Successful Matching")
-                                            currGuess = []
-                                            //removal Logic
-                                        }
-                                    }
-                                    else {
-                                        print("Wrong!")
-                                        for i in 0..<currGuess.count {
-                                            currGuess[i].flipped.toggle()
-                                        }
-                                        currGuess = []
-                                    }
                                 }
+                                
                             }
                     )
                     {
-                        Image(systemName: treasureItem.flipped ? treasureItem.image : "circle.fill")
+                        Image(systemName: treasureItem.flipped ? treasureItem.imageName : "circle.fill")
                     }
                 }
             }

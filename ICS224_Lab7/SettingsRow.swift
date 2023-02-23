@@ -22,6 +22,7 @@ struct SettingsRow: View {
                     set:{
                         newValue in
                         treasureItem.imageName = newValue
+                        
                     }
                 )
             )
