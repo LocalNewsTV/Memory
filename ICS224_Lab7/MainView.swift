@@ -8,32 +8,9 @@
 import SwiftUI
 
 
-struct gamePiece: Identifiable {
-    let id = UUID()
-    let image: String
-    var flipped: Bool
-    var numPerGroup: Int
-    init(image: String, flipped: Bool = false, numPerGroup: Int){
-        self.image = image
-        self.flipped = flipped
-        self.numPerGroup = numPerGroup
-    }
-}
-
-func generateGameArray(items: TreasureItems) -> [gamePiece]{
-    var set: [gamePiece] = []
-    for i in 0..<items.entries.count {
-        for _ in 0..<(items.entries[i].numGroups * items.entries[i].perGroup) {
-            set.append(gamePiece(image: items.entries[i].imageName, numPerGroup: items.entries[i].perGroup))
-        }
-    }
-    print(set)
-    return set.shuffled()
-}
-
-
 struct MainView: View {
     @State var view = "Start"
+    @State var changes: Bool = false
     @StateObject var treasureItems = TreasureItems()
     @StateObject var treasureCards = TreasureItemDeck()
     var body: some View {
@@ -44,14 +21,13 @@ struct MainView: View {
                 }
                 else if view == "Settings" {
                     
-                    SettingsView(treasureItems: treasureItems, treasureCards: treasureCards ).environmentObject(treasureItems)
+                    SettingsView(treasureItems: treasureItems, treasureCards: treasureCards, changes: $changes ).environmentObject(treasureItems)
                         
                 }
                 else if view == "Game" {
                     GameView().environmentObject(treasureCards).environmentObject(treasureItems)
                 }
             }
-            .navigationBarTitle(Text("Game"))
             .toolbar{
                 ToolbarItem(placement: .navigationBarTrailing){
                     if view == "Settings" {
@@ -60,6 +36,7 @@ struct MainView: View {
                                 withAnimation {
                                     let item = TreasureItem(imageName: "questionmark", perGroup: 2, numGroups: 2)
                                     treasureItems.entries.insert(item, at: 0)
+                                    changes = true
                                 }
                             }
                         ){

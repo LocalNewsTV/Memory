@@ -21,7 +21,7 @@ struct StartView: View {
                 
             }
             .padding()
-            
+            .navigationBarTitle(Text("Rules"))
         }
     }
 }

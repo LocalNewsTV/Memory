@@ -12,8 +12,7 @@ struct GameView: View {
     @EnvironmentObject var treasureItems: TreasureItems
     @EnvironmentObject var treasureCards: TreasureItemDeck
     
-    @State var remainingPieces: Int = 0
-    var attempts: Int = 0
+    
     var body: some View {
         VStack {
             Grid{
@@ -27,6 +26,7 @@ struct GameView: View {
                                     {
                                         if(treasureCards.entries[row][col].flipped != true){
                                             treasureCards.entries[row][col].flipped.toggle()
+                                            treasureCards.Pick(item: treasureCards.entries[row][col])
                                             
                                         }
                                         
@@ -43,9 +43,11 @@ struct GameView: View {
 
                 }
             }
-        Text("Attempts: \(attempts)")
+            Text("Attempts: \(treasureCards.attempts)")
         Text("Total Remaining \(treasureCards.remaining)")
+            Text(treasureCards.remaining == 0 ? "You win!" : "")
         }
+        .navigationBarTitle(Text(""))
     }
 }
 

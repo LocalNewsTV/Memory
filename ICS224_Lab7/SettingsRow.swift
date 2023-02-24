@@ -14,55 +14,58 @@ struct SettingsRow: View {
     @Binding var treasureItem: TreasureItem
     @Binding var changes: Bool
     var body: some View {
-        HStack {
-            TextEditor(text:
-                Binding(
-                    get: {
-                        treasureItem.imageName
-                    },
-                    set:{
-                        newValue in
-                        treasureItem.imageName = newValue
-                        changes = true
-                    }
+        ScrollView(.horizontal, showsIndicators: true) {
+            HStack(alignment: .center, spacing: 20) {
+                TextEditor(text:
+                            Binding(
+                                get: {
+                                    treasureItem.imageName
+                                },
+                                set:{
+                                    newValue in
+                                    treasureItem.imageName = newValue
+                                    changes = true
+                                }
+                            )
                 )
-            )
-            .frame(width:100, height: 35)
-            .lineLimit(1)
-            
-            //End of TextEditor
-            Stepper(value: Binding(
-                get: {
-                    treasureItem.perGroup
-                },
-                set: {
-                    newValue in
-                    treasureItem.perGroup = newValue
-                    changes = true
-                }),
-                     in: stepperRangePerGroup,
-                    step: stepValue
-            ) {
-                Text("\(treasureItem.perGroup)/per group")
+                
+                .frame(width:150, height: 35)
+                .lineLimit(1)
+                
+                //End of TextEditor
+                Stepper(value: Binding(
+                    get: {
+                        treasureItem.perGroup
+                    },
+                    set: {
+                        newValue in
+                        treasureItem.perGroup = newValue
+                        changes = true
+                    }),
+                        in: stepperRangePerGroup,
+                        step: stepValue
+                ) {
+                    Text("\(treasureItem.perGroup)/per group")
+                }
+                .padding()
+                .frame(height: 150)
+                Stepper(value: Binding(
+                    get: {
+                        treasureItem.numGroups
+                    },
+                    set: {
+                        newValue in
+                        treasureItem.numGroups = newValue
+                        changes = true
+                    }),
+                        in: stepperRangeNumGroups,
+                        step: stepValue
+                ) {
+                    Text("\(treasureItem.numGroups) groups")
+                }.frame(height: 150)
             }
-            .padding()
-            .frame(height: 150, alignment: .leading)
-            Stepper(value: Binding(
-                get: {
-                    treasureItem.numGroups
-                },
-                set: {
-                    newValue in
-                    treasureItem.numGroups = newValue
-                    changes = true
-                }),
-                     in: stepperRangeNumGroups,
-                    step: stepValue
-            ) {
-                Text("\(treasureItem.numGroups) groups")
-            }.frame(height: 150, alignment: .leading)
+            .padding(.horizontal, 20)
         }
-        
     }
     
     
