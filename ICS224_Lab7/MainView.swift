@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-
+///Overarching view of the application
+///
 struct MainView: View {
     @State var view = "Start"
     @State var changes: Bool = false

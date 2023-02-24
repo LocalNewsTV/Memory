@@ -7,19 +7,23 @@
 
 import Foundation
 import SwiftUI
-///
+/// Deck of Playable cards for game, holds all Treasures and functionality for game.
+///  Class also maintains variables for how many tiles are remaining, as well as attempts taken in the current session
 class TreasureItemDeck: ObservableObject {
     @Published var entries: [[TreasureItem]] = []
-    @Published var remaining: Isnt = 0
+    @Published var remaining: Int = 0
     @Published var attempts: Int = 0
     var currentGuesses: [TreasureItem] = []
     var singleArray: [TreasureItem] = []
     
+    //Default constructor Calls newGame with a single item array
     init() {
         newGame(items: [TreasureItem(imageName: "questionmark", perGroup: 2, numGroups: 2)])
     }
 
-    //
+    /// Takes and array and pads it until size equals next perfect square
+    /// - Parameter items: Array of [TreasureItems]
+    /// - Returns: [TreasureItems] array with a count equal to a perfect square
     func roundToSquare(items: [TreasureItem])-> [TreasureItem] {
         var newArray = items
         var initSquare = Int(sqrt(Double(items.count)).rounded(.down)) + 1
@@ -30,8 +34,14 @@ class TreasureItemDeck: ObservableObject {
         }
         return newArray.shuffled()
     }
-    /// Creates a new instance of a game
-    ///  - Parameter items:
+    
+    /// Creates a new instance of a game, does the following:
+    ///     -Sets 'remaining' and 'attempts' back to 0
+    ///     -iterates through an array of treasure items (The values from settings)
+    ///     -creates an array of TreasureItems equal to the value of settings
+    ///     -pads the array to the nearest perfect square
+    ///     -converts the array into a 2D Array of cards
+    ///  - Parameter items: a [TreasureItem] array to build off of
     func newGame(items: [TreasureItem]){
         remaining = 0
         attempts = 0
@@ -44,6 +54,7 @@ class TreasureItemDeck: ObservableObject {
         }
         temp = roundToSquare(items: temp)
         
+        //Creating 2D Array from the single array
         singleArray = temp
         entries = []
         let gridSize: Int = Int(sqrt(Double(singleArray.count)))
@@ -57,7 +68,7 @@ class TreasureItemDeck: ObservableObject {
             entries.append(innerArray)
         }
     }
-    
+    ///Takes all items in the currentGuesses array and resets their flipped status back to false in the entries array. (Turning them over in GameView)
     func flipBack(){
         for item in currentGuesses {
             var matched = false
@@ -73,6 +84,11 @@ class TreasureItemDeck: ObservableObject {
             }
         }
     }
+    ///Main controller for the "Cards" in the game view, does the flow control for the game progression
+    /// - Increases attempts everytime a non-blank card is selected
+    /// - appends selected card to currentGuesses array and compares entries
+    /// - if non-matching card is selected, flipBack() is called and the currentGuesses is reset
+    /// - if a set of matching cards fills the array, the array is reset and 'remaining' is reduced accordingly
     func Pick(item: TreasureItem){
         if item.imageName != "circlebadge" {
             attempts += 1
@@ -93,7 +109,7 @@ class TreasureItemDeck: ObservableObject {
     }
 }
 
-
+///Default Treasure Items array list, used for maintaining the options in Settings, 
 class TreasureItems: ObservableObject {
     @Published var entries: [TreasureItem]
 
