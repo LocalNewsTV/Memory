@@ -19,6 +19,7 @@ class TreasureItemDeck: ObservableObject {
     @Published var entries: [[TreasureItem]] = []
     @Published var remaining: Int = 0
     @Published var attempts: Int = 0
+    @Published var moveInProgress: Bool = false
     var currentGuesses: [TreasureItem] = []
     var singleArray: [TreasureItem] = []
     
@@ -50,6 +51,7 @@ class TreasureItemDeck: ObservableObject {
     func newGame(items: [TreasureItem]){
         remaining = 0
         attempts = 0
+        moveInProgress = false
         var temp: [TreasureItem] = []
         for i in 0..<items.count {
             for _ in 0..<(items[i].perGroup * items[i].numGroups){
@@ -94,6 +96,7 @@ class TreasureItemDeck: ObservableObject {
     /// - appends selected card to currentGuesses array and compares entries
     /// - if non-matching card is selected, flipBack() is called and the currentGuesses is reset
     /// - if a set of matching cards fills the array, the array is reset and 'remaining' is reduced accordingly
+    ///  **Move in Progress is added 3 times in function to account for the asyncAfter calls delay**
     func Pick(item: TreasureItem){
         attempts += 1
         if item.imageName != "circlebadge" {
@@ -101,20 +104,23 @@ class TreasureItemDeck: ObservableObject {
         }
         if(currentGuesses.count > 0 && currentGuesses[0].imageName == item.imageName){
             if(currentGuesses.count == item.perGroup){
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
                     self.remaining -= self.currentGuesses.count
                     self.completed()
                     self.currentGuesses = []
+                    self.moveInProgress = false
                 }
+            }
+            else {
+                moveInProgress = false
             }
         } else {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                 self.flipBack()
                 self.currentGuesses = []
+                self.moveInProgress = false
             }
-            
         }
-        
     }
     /// Iterates through all items in the currentGuesses array and marks them as removed from the game, by changing their imageName value
     func completed(){

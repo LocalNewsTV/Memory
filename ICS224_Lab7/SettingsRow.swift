@@ -15,8 +15,7 @@ struct SettingsRow: View {
     @Binding var changes: Bool
     var body: some View {
         ScrollView(.horizontal, showsIndicators: true) {
-            
-            HStack(alignment: .center) {
+            HStack(alignment: .center, spacing: 20) {
                 TextEditor(text:
                             Binding(
                                 get: {
@@ -29,7 +28,7 @@ struct SettingsRow: View {
                                 }
                             )
                 )
-                .frame(minWidth: 200, maxWidth: 500, minHeight: 25, maxHeight: 100)
+                .frame(width: 250, height: 40)
                 Stepper(value: Binding(
                     get: {
                         treasureItem.perGroup
@@ -43,7 +42,7 @@ struct SettingsRow: View {
                         step: stepValue
                 ) {
                     Text("\(treasureItem.perGroup)/per group")
-                }.frame(width: 250)
+                }.frame(width: 200)
                 Stepper(value: Binding(
                     get: {
                         treasureItem.numGroups
@@ -57,10 +56,8 @@ struct SettingsRow: View {
                         step: stepValue
                 ) {
                     Text("\(treasureItem.numGroups) groups")
-                }.frame(width: 250)
-            }
-            .fixedSize(horizontal: false, vertical: true)
-            .padding(.horizontal, 20)
+                }.frame(width: 200)
+            }.frame(maxWidth: .infinity, maxHeight: 75)
         }
     }
 }

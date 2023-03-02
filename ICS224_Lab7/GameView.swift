@@ -25,7 +25,8 @@ struct GameView: View {
                             Button(
                                 action:
                                     {
-                                        if(treasureCards.entries[row][col].flipped != true){
+                                        if(!treasureCards.moveInProgress && treasureCards.entries[row][col].flipped != true){
+                                            treasureCards.moveInProgress = true
                                             treasureCards.entries[row][col].flipped.toggle()
                                             treasureCards.Pick(item: treasureCards.entries[row][col])
                                         }
