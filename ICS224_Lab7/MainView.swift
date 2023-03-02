@@ -7,8 +7,11 @@
 
 import SwiftUI
 
-///Overarching view of the application
-///
+///Overarching view of the application, has a navigation for player to mitigate through the menus uses the following:
+/// -view (String): representing which view to display for if-else logic
+/// -changes (Bool): used for detecting when settings are changed so new games are made with new logic
+/// -treasureItems: holds the players game settings
+/// -treasureCards: Game instantiation with all pieces
 struct MainView: View {
     @State var view = "Start"
     @State var changes: Bool = false
@@ -21,9 +24,7 @@ struct MainView: View {
                     StartView()
                 }
                 else if view == "Settings" {
-                    
                     SettingsView(treasureItems: treasureItems, treasureCards: treasureCards, changes: $changes ).environmentObject(treasureItems)
-                        
                 }
                 else if view == "Game" {
                     GameView().environmentObject(treasureCards).environmentObject(treasureItems)
@@ -74,15 +75,15 @@ struct MainView: View {
                             .foregroundColor(view == "Settings" ? .blue : .black)
                     }
                     .accessibilityIdentifier("SettingsBarButton")
-
+                    
                 }
                 ToolbarItem(placement: .bottomBar){Spacer()}
             }
         }
     }
 }
-    struct MainView_Previews: PreviewProvider {
-        static var previews: some View {
-            MainView()
-        }
+struct MainView_Previews: PreviewProvider {
+    static var previews: some View {
+        MainView()
     }
+}

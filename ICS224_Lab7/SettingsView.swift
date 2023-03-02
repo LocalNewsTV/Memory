@@ -7,13 +7,18 @@
 
 import SwiftUI
 
+/// Settings View, View for player to update the treasure Items for the next game. creates SettingsRows for all items in the treasureItems array where users can modify values
+/// uses Observed Objects
+///     -treasureItems: Instance of Settings that player can directly affect to change tokens in game
+///     -treasureCards: passed in to call newGame functionality on change of the game settings
+///   Binding Variables:
+///   -changes Bool : inefficient method for detecting changes to settings array so new games will instantiate
 struct SettingsView: View {
     @ObservedObject var treasureItems: TreasureItems
     @ObservedObject var treasureCards: TreasureItemDeck
-//    @State var changes = false
     @Binding var changes: Bool
     var body: some View {
-    VStack {
+        VStack {
             List($treasureItems.entries){
                 $treasureItem in
                 SettingsRow(treasureItem: $treasureItem, changes: $changes)
@@ -31,7 +36,7 @@ struct SettingsView: View {
                 changes = false
             })
         }
-    .navigationBarTitle(Text("Treasures"))
+        .navigationBarTitle(Text("Treasures"))
     }
 }
 
